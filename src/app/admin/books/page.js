@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { deleteBook } from "@/actions/catalog";
 import { DeleteButton } from "@/components/admin/delete-button";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { requireAdmin } from "@/lib/dal";
 import { listBooks } from "@/lib/catalog";
@@ -13,9 +13,7 @@ export default async function BooksPage() {
     <section>
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Books</h1>
-        <Button asChild>
-          <Link href="/admin/books/new">New book</Link>
-        </Button>
+        <Link href="/admin/books/new" className={buttonVariants()}>New book</Link>
       </div>
       <Table>
         <TableHeader>
@@ -33,9 +31,9 @@ export default async function BooksPage() {
               <TableCell>{b.authors.map((a) => a.name).join(", ")}</TableCell>
               <TableCell>{b.genres.map((g) => g.name).join(", ")}</TableCell>
               <TableCell className="flex justify-end gap-2">
-                <Button asChild variant="outline" size="sm">
-                  <Link href={`/admin/books/${b._id}/edit`}>Edit</Link>
-                </Button>
+                <Link href={`/admin/books/${b._id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })}>
+                  Edit
+                </Link>
                 <DeleteButton action={deleteBook.bind(null, b._id)} />
               </TableCell>
             </TableRow>

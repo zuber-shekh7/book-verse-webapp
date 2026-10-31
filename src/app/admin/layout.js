@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Suspense } from "react";
 import { logout } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 
@@ -23,9 +22,7 @@ export default function AdminLayout({ children }) {
           </Button>
         </form>
       </header>
-      <Suspense fallback={<p className="text-muted-foreground">Loading...</p>}>
-        {children}
-      </Suspense>
+      {children}
     </div>
   );
 }
