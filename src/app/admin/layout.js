@@ -1,0 +1,31 @@
+import Link from "next/link";
+import { Suspense } from "react";
+import { logout } from "@/actions/auth";
+import { Button } from "@/components/ui/button";
+
+export const metadata = { title: "Admin | BookVerse" };
+
+export default function AdminLayout({ children }) {
+  return (
+    <div className="mx-auto w-full max-w-5xl p-6">
+      <header className="mb-8 flex items-center justify-between border-b pb-4">
+        <nav className="flex gap-4 text-sm font-medium">
+          <Link href="/admin/books">Books</Link>
+          <Link href="/admin/authors">Authors</Link>
+          <Link href="/admin/genres">Genres</Link>
+          <Link href="/" className="text-muted-foreground">
+            View site
+          </Link>
+        </nav>
+        <form action={logout}>
+          <Button type="submit" variant="outline" size="sm">
+            Log out
+          </Button>
+        </form>
+      </header>
+      <Suspense fallback={<p className="text-muted-foreground">Loading...</p>}>
+        {children}
+      </Suspense>
+    </div>
+  );
+}
