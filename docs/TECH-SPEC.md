@@ -11,16 +11,17 @@
 | Name | Purpose |
 |------|---------|
 | `MONGODB_URI` | Remote MongoDB connection string |
+| `SESSION_SECRET` | Signs session cookies (`openssl rand -base64 32`) |
 | `ADMIN_EMAIL` | Email for the seeded first admin |
 | `ADMIN_PASSWORD` | Password for the seeded first admin |
 
-Set in `.env.local` (git-ignored via `.env*`). Auth session secret to be added once the auth approach is implemented.
+Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 ## Data model (initial)
 - **User:** email (unique), passwordHash, role (`admin`)
 - **Author:** name, bio
 - **Genre:** name (unique)
-- **Book:** title, author -> Author, genres -> [Genre], description, coverUrl, isbn, publishedYear
+- **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear
 
 ## Seeding
 - `npm run seed:admin` creates the first admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD`. It must be idempotent.
