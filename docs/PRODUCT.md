@@ -10,7 +10,7 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
 ## MVP (v1)
 1. **Admin catalog management**
    - Admin login; admin-only routes.
-   - CRUD for **books** (title, author, genres, description, cover image URL, ISBN, published year).
+   - CRUD for **books** (title, one or more authors, genres, description, cover image URL, ISBN, published year).
    - CRUD for **authors** (name, bio).
    - CRUD for **genres** (name).
 2. **Minimal public catalog**
