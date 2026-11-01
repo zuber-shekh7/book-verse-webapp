@@ -1,3 +1,4 @@
+import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import Link from "next/link";
 import { deleteGenre } from "@/actions/catalog";
 import { DeleteButton } from "@/components/admin/delete-button";
@@ -11,6 +12,7 @@ export default async function GenresPage() {
   const genres = await listGenres();
   return (
     <section>
+      <AdminBreadcrumbs items={[{ label: "Genres" }]} />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Genres</h1>
         <Link href="/admin/genres/new" className={buttonVariants()}>New genre</Link>

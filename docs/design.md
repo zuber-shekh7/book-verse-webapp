@@ -109,6 +109,7 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 ## 7. Navigation and layout
 - **Public header:** wordmark "BookVerse" (Lora, 600) left, theme toggle right. Sticky not required for MVP. Footer is a single muted line.
 - **Admin shell:** left sidebar (shadcn `sidebar`, `collapsible="icon"`): wordmark on top, nav (Books, Authors, Genres) with the active item highlighted, footer with signed-in email, theme toggle and Log out. Collapses to an icon rail on desktop; on small screens it is a drawer opened by the trigger in the top strip. The login page has no sidebar. Content max width 1024px (`max-w-5xl`).
+- **Breadcrumbs (admin):** above the page title, via `AdminBreadcrumbs`. List: `Books`. New: `Books / New book` (Books links to the list). Edit: `Books / {item name} / Edit`; the item name is plain text since there is no admin detail page. The last crumb is the current page and is not a link.
 - **Container:** centered, horizontal padding 16px (mobile) / 24px (md+).
 - **Responsive:** design mobile-first; admin tables scroll horizontally on small screens.
 

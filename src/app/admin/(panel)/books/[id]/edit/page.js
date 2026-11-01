@@ -1,3 +1,4 @@
+import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { notFound } from "next/navigation";
 import { saveBook } from "@/actions/catalog";
 import { BookForm } from "@/components/admin/forms";
@@ -11,6 +12,7 @@ export default async function EditBookPage({ params }) {
   if (!book) notFound();
   return (
     <section>
+      <AdminBreadcrumbs items={[{ label: "Books", href: "/admin/books" }, { label: book.title }, { label: "Edit" }]} />
       <h1 className="mb-4 text-2xl font-bold">Edit book</h1>
       <BookForm action={saveBook.bind(null, id)} book={book} authors={authors} genres={genres} />
     </section>
