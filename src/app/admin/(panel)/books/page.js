@@ -1,3 +1,4 @@
+import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import Link from "next/link";
 import { deleteBook } from "@/actions/catalog";
 import { DeleteButton } from "@/components/admin/delete-button";
@@ -11,6 +12,7 @@ export default async function BooksPage() {
   const books = await listBooks();
   return (
     <section>
+      <AdminBreadcrumbs items={[{ label: "Books" }]} />
       <div className="mb-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Books</h1>
         <Link href="/admin/books/new" className={buttonVariants()}>New book</Link>
