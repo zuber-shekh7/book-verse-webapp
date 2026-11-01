@@ -7,6 +7,7 @@ Book discovery & reviews web app. Admins curate the catalog; readers browse it p
 ## Docs
 - Product and roadmap: [docs/PRODUCT.md](docs/PRODUCT.md)
 - Technical spec (stack, data model, routes, env vars): [docs/TECH-SPEC.md](docs/TECH-SPEC.md)
+- Design (colors, typography, components, page patterns): [docs/design.md](docs/design.md)
 - Decision records: [docs/decisions/](docs/decisions/)
 
 Keep these up to date when decisions or scope change.

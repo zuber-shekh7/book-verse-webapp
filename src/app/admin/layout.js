@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { logout } from "@/actions/auth";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 
 export const metadata = { title: "Admin | BookVerse" };
@@ -16,11 +17,14 @@ export default function AdminLayout({ children }) {
             View site
           </Link>
         </nav>
-        <form action={logout}>
-          <Button type="submit" variant="outline" size="sm">
-            Log out
-          </Button>
-        </form>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <form action={logout}>
+            <Button type="submit" variant="outline" size="sm">
+              Log out
+            </Button>
+          </form>
+        </div>
       </header>
       {children}
     </div>
