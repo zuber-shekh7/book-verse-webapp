@@ -1,4 +1,5 @@
 import "server-only";
+import { io } from "next/cache";
 import mongoose from "mongoose";
 
 const uri = process.env.MONGODB_URI;
@@ -7,6 +8,8 @@ const uri = process.env.MONGODB_URI;
 const cached = (globalThis._mongoose ??= { conn: null, promise: null });
 
 export async function connectDB() {
+  // Mongoose reads the current time internally; keep DB work out of the static shell (Cache Components).
+  await io();
   if (!uri) {
     throw new Error("MONGODB_URI is not set. Add it to .env.local");
   }
