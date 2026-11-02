@@ -137,3 +137,7 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 5. Update the public list to the cover grid and add the cover placeholder.
 6. Re-check contrast of every token pair, tweak values if any fail AA.
 7. Record any deviations in [decisions/](decisions/) and keep this file in sync.
+
+### Book list search (`/`)
+- GET form above the grid: search input + Search button (icon-only on mobile), full container width so its edges line up with the grid. An × inside the input clears the search (only shown when a term is active).
+- Search lives in the URL (`?q=`), so results are shareable. When searching, a muted "{n} books for “{q}”" line sits above the grid; no match shows "No books match your search." with a Clear link.

@@ -28,7 +28,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 ## Routes (planned)
 **Public**
-- `/` : landing / book list
+- `/` : landing / book list; optional `?q=` search (title or author name)
 - `/books/[id]` : book detail
 
 **Admin** (requires admin session)

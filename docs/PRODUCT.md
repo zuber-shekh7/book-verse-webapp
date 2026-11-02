@@ -17,9 +17,10 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - Book list page.
    - Book detail page.
    - Both visible without login.
+   - Search by title/author on the book list (URL query param).
 
 ## Later (not in MVP)
-- Browse/search with filters by genre/author
+- Genre/author filters on the book list (`searchBooks` already accepts `genre`/`author`)
 - Ratings and written reviews (+ moderation)
 - Reading lists / shelves (want to read, reading, read)
 - Reader accounts
