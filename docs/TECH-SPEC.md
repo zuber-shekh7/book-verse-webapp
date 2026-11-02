@@ -33,9 +33,9 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 **Admin** (requires admin session)
 - `/admin/login`
-- `/admin/books`, `/admin/books/new`, `/admin/books/[id]/edit`
-- `/admin/authors`, `/admin/authors/new`, `/admin/authors/[id]/edit`
-- `/admin/genres`, `/admin/genres/new`, `/admin/genres/[id]/edit`
+- `/admin/books`, `/admin/books/new`, `/admin/books/[id]` (read-only view), `/admin/books/[id]/edit`
+- `/admin/authors`, `/admin/authors/new`, `/admin/authors/[id]` (read-only view), `/admin/authors/[id]/edit`
+- `/admin/genres`, `/admin/genres/new`, `/admin/genres/[id]` (read-only view), `/admin/genres/[id]/edit`
 
 ## Open technical decisions
 - Session mechanism for email/password auth (e.g. signed cookie sessions vs. Auth.js credentials)

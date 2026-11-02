@@ -1,5 +1,6 @@
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import Link from "next/link";
+import { Eye, Pencil } from "lucide-react";
 import { deleteGenre } from "@/actions/catalog";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { buttonVariants } from "@/components/ui/button";
@@ -21,18 +22,25 @@ export default async function GenresPage() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
-            <TableHead className="w-40" />
+            <TableHead className="w-0" />
           </TableRow>
         </TableHeader>
         <TableBody>
           {genres.map((g) => (
             <TableRow key={g._id}>
-              <TableCell>{g.name}</TableCell>
+              <TableCell>
+                <Link href={`/admin/genres/${g._id}`} className="text-primary underline-offset-4 hover:underline">{g.name}</Link>
+              </TableCell>
               <TableCell className="flex justify-end gap-2">
-                <Link href={`/admin/genres/${g._id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })}>
-                  Edit
+                <Link href={`/admin/genres/${g._id}`} className={buttonVariants({ variant: "secondary", size: "sm" })} aria-label="View" title="View">
+                  <Eye />
+                  <span className="hidden sm:inline">View</span>
                 </Link>
-                <DeleteButton action={deleteGenre.bind(null, g._id)} />
+                <Link href={`/admin/genres/${g._id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })} aria-label="Edit" title="Edit">
+                  <Pencil />
+                  <span className="hidden sm:inline">Edit</span>
+                </Link>
+                <DeleteButton action={deleteGenre.bind(null, g._id)} name={g.name} />
               </TableCell>
             </TableRow>
           ))}
