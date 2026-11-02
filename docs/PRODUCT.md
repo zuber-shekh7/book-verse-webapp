@@ -13,6 +13,7 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - CRUD for **books** (title, one or more authors, genres, description, cover image URL, ISBN, published year).
    - CRUD for **authors** (name, bio).
    - CRUD for **genres** (name).
+   - Read-only **users** list and detail pages (admins and readers, with role).
 2. **Minimal public catalog**
    - Book list page.
    - Book detail page.
