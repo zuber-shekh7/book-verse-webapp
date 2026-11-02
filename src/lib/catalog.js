@@ -65,3 +65,25 @@ async function listBooksBy(field, id) {
 
 export const listBooksByAuthor = (id) => listBooksBy("authors", id);
 export const listBooksByGenre = (id) => listBooksBy("genres", id);
+
+const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+// Public catalog search. q matches title or author name; genre/author are ObjectId strings.
+export async function searchBooks({ q = "", genre = "", author = "" } = {}) {
+  await connectDB();
+  const filter = {};
+  const term = q.trim().slice(0, 100);
+  if (term) {
+    const rx = new RegExp(escapeRegex(term), "i");
+    const authorIds = await Author.find({ name: rx }).distinct("_id");
+    filter.$or = [{ title: rx }, { authors: { $in: authorIds } }];
+  }
+  if (isValidObjectId(genre)) filter.genres = genre;
+  if (isValidObjectId(author)) filter.authors = author;
+  const books = await Book.find(filter)
+    .sort({ createdAt: -1 })
+    .populate("authors", "name")
+    .populate("genres", "name")
+    .lean();
+  return plain(books);
+}
