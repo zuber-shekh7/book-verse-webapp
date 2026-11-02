@@ -51,3 +51,17 @@ export async function getGenre(id) {
   const genre = await Genre.findById(id).lean();
   return genre ? plain(genre) : null;
 }
+
+async function listBooksBy(field, id) {
+  if (!isValidObjectId(id)) return [];
+  await connectDB();
+  const books = await Book.find({ [field]: id })
+    .sort({ title: 1 })
+    .populate("authors", "name")
+    .populate("genres", "name")
+    .lean();
+  return plain(books);
+}
+
+export const listBooksByAuthor = (id) => listBooksBy("authors", id);
+export const listBooksByGenre = (id) => listBooksBy("genres", id);

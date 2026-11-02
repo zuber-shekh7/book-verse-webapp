@@ -12,7 +12,7 @@ export default async function EditGenrePage({ params }) {
   if (!genre) notFound();
   return (
     <section>
-      <AdminBreadcrumbs items={[{ label: "Genres", href: "/admin/genres" }, { label: genre.name }, { label: "Edit" }]} />
+      <AdminBreadcrumbs items={[{ label: "Genres", href: "/admin/genres" }, { label: genre.name, href: `/admin/genres/${id}` }, { label: "Edit" }]} />
       <h1 className="mb-4 text-2xl font-bold">Edit genre</h1>
       <GenreForm action={saveGenre.bind(null, id)} genre={genre} />
     </section>
