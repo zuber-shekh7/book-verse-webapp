@@ -1,32 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Field, FormShell } from "@/components/form-shell";
 import { Textarea } from "@/components/ui/textarea";
-
-function Field({ label, name, children }) {
-  return (
-    <div className="grid gap-2">
-      <Label htmlFor={name}>{label}</Label>
-      {children}
-    </div>
-  );
-}
-
-function FormShell({ action, submitLabel, children }) {
-  const [state, formAction, pending] = useActionState(action, null);
-  return (
-    <form action={formAction} className="grid max-w-xl gap-4">
-      {children}
-      {state?.error && <p className="text-sm text-destructive">{state.error}</p>}
-      <Button type="submit" disabled={pending} className="w-fit">
-        {pending ? "Saving..." : submitLabel}
-      </Button>
-    </form>
-  );
-}
 
 export function AuthorForm({ action, author }) {
   return (
