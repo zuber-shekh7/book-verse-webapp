@@ -31,5 +31,5 @@ export async function getCurrentUser() {
   await connectDB();
   const user = await User.findById(userId).select("name email createdAt").lean();
   if (!user) redirect("/login");
-  return { name: user.name || user.email, email: user.email, createdAt: user.createdAt.toISOString() };
+  return { id: userId, name: user.name || user.email, email: user.email, createdAt: user.createdAt.toISOString() };
 }

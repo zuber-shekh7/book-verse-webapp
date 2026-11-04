@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
+import { ReadingStatusControl } from "@/components/reading-status-control";
 import { getBook } from "@/lib/catalog";
+import { getEntryStatus } from "@/lib/reading-list";
+import { readSession } from "@/lib/session";
 
 export default function BookPage({ params }) {
   return (
@@ -25,6 +28,9 @@ async function BookDetail({ params }) {
   const { id } = await params;
   const book = await getBook(id);
   if (!book) notFound();
+  const session = await readSession();
+  const viewer = session?.role === "reader" ? "reader" : session ? "admin" : "guest";
+  const status = viewer === "reader" ? await getEntryStatus(session.userId, id) : null;
 
   return (
     <article className="mt-6 flex flex-col gap-8 md:flex-row">
@@ -48,6 +54,7 @@ async function BookDetail({ params }) {
             ))}
           </div>
         )}
+        <ReadingStatusControl bookId={book._id} status={status} viewer={viewer} size="default" className="w-full max-w-56" />
         {book.description && <p className="whitespace-pre-line">{book.description}</p>}
         <dl className="text-sm text-muted-foreground">
           {book.publishedYear && <div>Published: {book.publishedYear}</div>}

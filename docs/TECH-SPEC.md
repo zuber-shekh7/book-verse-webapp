@@ -23,6 +23,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - **Author:** name, bio
 - **Genre:** name (unique)
 - **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
+- **ReadingEntry:** userId -> User, bookId -> Book, status (`wishlist` | `reading` | `on_hold` | `dropped` | `completed`); unique on (userId, bookId). Removed when its book is deleted.
 - **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear
 
 ## Seeding
@@ -36,6 +37,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 **Reader**
 - `/signup`, `/login` : reader account pages (signed-in readers are redirected to the dashboard)
 - `/dashboard` : reader dashboard (requires reader session)
+- `/dashboard/reading-list` : the reader's list with status tabs (`?status=`); status can be changed from here and from the book page (requires reader session)
 - `/dashboard/settings` : edit name, change password (requires reader session)
 - `/forgot-password`, `/reset-password/[token]` : password recovery (readers only; the link is printed to the server console in development, no mail provider yet)
 

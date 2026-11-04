@@ -6,6 +6,8 @@ import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/dal";
+import { countByStatus } from "@/lib/reading-list";
+import { READING_STATUSES } from "@/lib/reading-status";
 
 export const metadata = { title: "Dashboard | BookVerse" };
 
@@ -24,6 +26,7 @@ export default function DashboardPage() {
 
 async function Dashboard() {
   const user = await getCurrentUser();
+  const counts = await countByStatus(user.id);
   const since = new Date(user.createdAt).toLocaleDateString("en-US", { dateStyle: "long" });
   return (
     <>
@@ -37,7 +40,8 @@ async function Dashboard() {
           <LogoutButton />
         </div>
       </div>
-      <Card className="max-w-md">
+      <div className="grid max-w-3xl gap-6 md:grid-cols-2">
+      <Card>
         <CardHeader>
           <CardTitle>Your account</CardTitle>
         </CardHeader>
@@ -49,6 +53,28 @@ async function Dashboard() {
           </dl>
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Reading list ({counts.all})</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <ul className="grid gap-2 text-sm">
+            {READING_STATUSES.map(({ value, label, icon: Icon }) => (
+              <li key={value} className="flex items-center justify-between">
+                <Link href={`/dashboard/reading-list?status=${value}`} className="flex items-center gap-2 hover:text-primary">
+                  <Icon className="size-4 text-muted-foreground" />
+                  {label}
+                </Link>
+                <span className="text-muted-foreground">{counts[value]}</span>
+              </li>
+            ))}
+          </ul>
+          <Link href="/dashboard/reading-list" className={buttonVariants({ variant: "outline", size: "sm" }) + " w-fit"}>
+            View reading list
+          </Link>
+        </CardContent>
+      </Card>
+      </div>
     </>
   );
 }
