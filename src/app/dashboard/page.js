@@ -1,8 +1,9 @@
 import { Suspense } from "react";
-import { LogOut } from "lucide-react";
-import { readerLogout } from "@/actions/auth";
+import Link from "next/link";
+import { Settings } from "lucide-react";
+import { LogoutButton } from "@/components/logout-button";
 import { SiteHeader } from "@/components/site-header";
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/dal";
 
@@ -28,12 +29,13 @@ async function Dashboard() {
     <>
       <div className="mb-8 flex items-center justify-between gap-4">
         <h1 className="font-heading text-3xl font-semibold">Welcome, {user.name}</h1>
-        <form action={readerLogout}>
-          <Button type="submit" variant="outline" size="sm">
-            <LogOut />
-            Log out
-          </Button>
-        </form>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/settings" className={buttonVariants({ variant: "outline", size: "sm" })} aria-label="Settings" title="Settings">
+            <Settings />
+            <span className="hidden sm:inline">Settings</span>
+          </Link>
+          <LogoutButton />
+        </div>
       </div>
       <Card className="max-w-md">
         <CardHeader>

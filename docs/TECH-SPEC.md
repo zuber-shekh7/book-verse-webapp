@@ -14,6 +14,7 @@
 | `SESSION_SECRET` | Signs session cookies (`openssl rand -base64 32`) |
 | `ADMIN_EMAIL` | Email for the seeded first admin |
 | `ADMIN_PASSWORD` | Password for the seeded first admin |
+| `APP_URL` | Base URL used in password-reset links (default `http://localhost:3000`) |
 
 Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
@@ -21,6 +22,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - **User:** name (optional; admins have none), email (unique), passwordHash, role (`admin` | `reader`)
 - **Author:** name, bio
 - **Genre:** name (unique)
+- **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
 - **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear
 
 ## Seeding
@@ -34,6 +36,8 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 **Reader**
 - `/signup`, `/login` : reader account pages (signed-in readers are redirected to the dashboard)
 - `/dashboard` : reader dashboard (requires reader session)
+- `/dashboard/settings` : edit name, change password (requires reader session)
+- `/forgot-password`, `/reset-password/[token]` : password recovery (readers only; the link is printed to the server console in development, no mail provider yet)
 
 **Admin** (requires admin session)
 - `/admin/login`
