@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { RoleBadge } from "@/components/admin/role-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -22,6 +23,7 @@ export default async function UsersPage() {
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Joined</TableHead>
             <TableHead className="w-0" />
           </TableRow>
@@ -36,6 +38,7 @@ export default async function UsersPage() {
               </TableCell>
               <TableCell>{u.email}</TableCell>
               <TableCell><RoleBadge role={u.role} /></TableCell>
+              <TableCell><StatusBadge isActive={u.isActive !== false} inactiveLabel="Deactivated" /></TableCell>
               <TableCell>{fmt(u.createdAt)}</TableCell>
               <TableCell className="flex justify-end">
                 <Link
@@ -52,7 +55,7 @@ export default async function UsersPage() {
           ))}
           {users.length === 0 && (
             <TableRow>
-              <TableCell colSpan={5} className="text-muted-foreground">No users yet.</TableCell>
+              <TableCell colSpan={6} className="text-muted-foreground">No users yet.</TableCell>
             </TableRow>
           )}
         </TableBody>

@@ -26,6 +26,7 @@ export async function login(_prev, formData) {
   const user = await User.findOne({ email: parsed.data.email.toLowerCase() });
   const valid = user && (await bcrypt.compare(parsed.data.password, user.passwordHash));
   if (!valid) return { error: "Invalid email or password" };
+  if (user.isActive === false) return { error: "Your account has been deactivated." };
 
   await createSession({ userId: user.id, role: user.role });
   redirect("/admin/books");
@@ -80,6 +81,7 @@ export async function readerLogin(_prev, formData) {
   const user = await User.findOne({ email: parsed.data.email.toLowerCase() });
   const valid = user && (await bcrypt.compare(parsed.data.password, user.passwordHash));
   if (!valid) return { error: "Invalid email or password" };
+  if (user.isActive === false) return { error: "Your account has been deactivated." };
   if (user.role !== "reader") return { error: "Admins sign in at /admin/login" };
 
   await createSession({ userId: user.id, role: user.role });
@@ -141,7 +143,7 @@ export async function requestPasswordReset(_prev, formData) {
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
   await connectDB();
-  const user = await User.findOne({ email: parsed.data.email.toLowerCase(), role: "reader" });
+  const user = await User.findOne({ email: parsed.data.email.toLowerCase(), role: "reader", isActive: { $ne: false } });
   if (user) {
     const token = randomBytes(32).toString("base64url");
     await PasswordReset.deleteMany({ userId: user._id });
@@ -170,7 +172,11 @@ export async function resetPassword(token, _prev, formData) {
   const reset = await PasswordReset.findOne({ tokenHash: hashToken(token), expiresAt: { $gt: new Date() } });
   if (!reset) return { error: "This reset link is invalid or has expired" };
 
-  await User.findByIdAndUpdate(reset.userId, { passwordHash: await bcrypt.hash(parsed.data.password, 12) });
+  const res = await User.updateOne(
+    { _id: reset.userId, isActive: { $ne: false } },
+    { passwordHash: await bcrypt.hash(parsed.data.password, 12) },
+  );
   await PasswordReset.deleteMany({ userId: reset.userId });
+  if (!res.matchedCount) return { error: "This account has been deactivated" };
   redirect("/login?reset=1");
 }

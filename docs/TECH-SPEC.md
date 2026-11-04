@@ -19,7 +19,7 @@
 Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 ## Data model (initial)
-- **User:** name (optional; admins have none), email (unique), passwordHash, role (`admin` | `reader`)
+- **User:** name (optional; admins have none), email (unique), passwordHash, role (`admin` | `reader`), isActive (default `true`; only `false` counts as deactivated, so older accounts need no backfill)
 - **Author:** name, bio, isActive
 - **Genre:** name (unique), isActive
 - **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
@@ -27,6 +27,8 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear, isActive
 
 `isActive` (default `false`) is the draft/publish flag on Author, Genre and Book. Readers only see active content: inactive books are hidden (404 for non-admins; admins can preview), inactive authors/genres are left off a book's lists, and a book with no active author is hidden. Reading-list rows for hidden books are kept but not shown or counted. `publicBookFilter()` and `getBook(id, { publicOnly })` in `src/lib/catalog.js` implement this.
+
+Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks the user is still active (cached per request) and returns `null` for deactivated or deleted users. Login, forgot-password and reset-password refuse deactivated accounts. Admins can deactivate/reactivate readers only (`setUserActive` in src/actions/users.js).
 
 ## Seeding
 - `npm run seed:admin` creates the first admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD`. It must be idempotent.
@@ -56,6 +58,10 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - Password hashing library (e.g. bcrypt)
 - Validation library (e.g. zod)
 - Mutations via server actions vs. route handlers
+
+## Known issues / fix later
+- **Reactivated users resume their old session.** Deactivating a user does not invalidate their login cookie; `readSession()` just ignores it while the account is inactive. After reactivation the same cookie works again until it expires (7 days), without a fresh login.
+  - Planned fix: add `sessionsValidAfter` (Date) to User, set it to now in `setUserActive` when deactivating, and have `isAllowed()` in src/lib/session.js reject tokens whose `iat` is earlier. Existing users have no field, so no backfill. The same field could also end other sessions after a password change or reset.
 
 ## Verification
 `npm run lint`, `npm run build`, then manual admin CRUD and public pages in `npm run dev`.

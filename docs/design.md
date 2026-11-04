@@ -151,6 +151,7 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 ### Admin users (`/admin/users`)
 - Read-only. List heading shows the total, `Users (n)`; columns Name, Email, Role, Joined and an icon+label View button (icon-only below `sm`). Detail page is a `dl` with name, email, role, joined and last updated. No Edit or Delete.
 - Status badge (admin lists and detail pages): `Active` is an outline badge in the `--success` color, `Draft` the secondary badge. Forms have an "Active (visible to readers)" checkbox, unchecked for new items.
+- User status: same `StatusBadge`, with a "Deactivated" label instead of "Draft". Reader detail page has a destructive "Deactivate" button (confirm dialog) or an outline "Reactivate" button.
 - Role badge: `admin` uses the default (burgundy) badge, `reader` the secondary badge. The password hash is never selected.
 
 ### Account settings and recovery

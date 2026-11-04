@@ -4,7 +4,7 @@ import { connectDB } from "./db";
 import User from "@/models/User";
 
 // Never select passwordHash: these results are passed to components.
-const FIELDS = "name email role createdAt updatedAt";
+const FIELDS = "name email role isActive createdAt updatedAt";
 
 const plain = (doc) => JSON.parse(JSON.stringify(doc));
 

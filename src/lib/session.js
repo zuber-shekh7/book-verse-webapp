@@ -1,6 +1,9 @@
 import "server-only";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import { cache } from "react";
+import { connectDB } from "./db";
+import User from "@/models/User";
 
 const COOKIE_NAME = "session";
 const MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000;
@@ -10,6 +13,13 @@ function getKey() {
   if (!secret) throw new Error("SESSION_SECRET is not set. Add it to .env.local");
   return new TextEncoder().encode(secret);
 }
+
+// Sessions are stateless JWTs, so deactivation must be checked here. Accounts without the field count as active.
+const isAllowed = cache(async (userId) => {
+  await connectDB();
+  const user = await User.findById(userId).select("isActive").lean();
+  return Boolean(user) && user.isActive !== false;
+});
 
 export async function createSession({ userId, role }) {
   const expiresAt = new Date(Date.now() + MAX_AGE_MS);
@@ -34,6 +44,7 @@ export async function readSession() {
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, getKey(), { algorithms: ["HS256"] });
+    if (!(await isAllowed(payload.userId))) return null;
     return { userId: payload.userId, role: payload.role };
   } catch {
     return null;
