@@ -8,6 +8,7 @@ import { connectDB } from "@/lib/db";
 import Author from "@/models/Author";
 import Book from "@/models/Book";
 import Genre from "@/models/Genre";
+import ReadingEntry from "@/models/ReadingEntry";
 
 const objectId = z.string().regex(/^[a-f\d]{24}$/i, "Invalid id");
 
@@ -103,5 +104,6 @@ export async function saveBook(id, _prev, formData) {
   return books.save(id, formData);
 }
 export async function deleteBook(id) {
-  return books.remove(id);
+  await books.remove(id); // checks admin first
+  await ReadingEntry.deleteMany({ bookId: id }); // no orphaned reading-list rows
 }

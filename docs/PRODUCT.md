@@ -19,11 +19,13 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - Book detail page.
    - Both visible without login.
    - Search by title/author on the book list (URL query param).
+3. **Reading list (readers)**
+   - Signed-in readers add books to a personal list with one status each: Wishlist, Reading, On hold, Dropped, Completed.
+   - Added from the book page; status can be changed or removed there or on the list page (`/dashboard/reading-list`, tabs per status); counts on the dashboard.
 
 ## Later (not in MVP)
 - Genre/author filters on the book list (`searchBooks` already accepts `genre`/`author`)
 - Ratings and written reviews (+ moderation)
-- Reading lists / shelves (want to read, reading, read)
 - Reader accounts: sign-up, login, dashboard, profile editing, password change and password reset (dev-console delivery) are done; email delivery, email verification and rate limiting are not
 
 ## Out of scope for now

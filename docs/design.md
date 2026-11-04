@@ -155,3 +155,9 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 ### Account settings and recovery
 - `/dashboard/settings`: back link, Lora H1, then two stacked `max-w-md` cards (Profile with read-only email, Change password). Dashboard header has outline Settings and Log out buttons, icon-only below `sm`.
 - `/forgot-password` and `/reset-password/[token]` reuse the centered `max-w-sm` auth layout. Form feedback uses `FormMessage`: a bordered banner with an icon (check = success in the green `--success` token, alert = error in `--destructive`), `role="status"`/`"alert"`. Messages are dismissed when the page is hidden, since Cache Components keeps pages mounted. `/login?reset=1` shows "Password updated. Please log in."
+
+### Reading list
+- Status control: outline `Add to list` button (with plus) when absent; secondary button with the status icon and label when set, with a chevron. Opens a dropdown of the five statuses (check on the current one), then a destructive "Remove from list". Shown on the book page (`max-w-56`) and, as a full-width status button, under each card on the reading-list page. The home grid has no control (kept clean). Signed-out visitors get the same button as a link to `/login`; admins see nothing.
+- Status icons: Wishlist `BookmarkPlus`, Reading `BookOpen`, On hold `Pause`, Dropped `CircleX`, Completed `CircleCheck`.
+- `/dashboard/reading-list`: back link, Lora H1, pill tabs (All + five statuses, each with a count; active = primary fill), then the standard book grid. Empty states: "Your reading list is empty. Browse books to add some." / "Nothing marked \u201cReading\u201d yet."
+- Dashboard shows a Reading list card with per-status counts linking to each tab.
