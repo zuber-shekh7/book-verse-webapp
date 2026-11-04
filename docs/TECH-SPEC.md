@@ -3,7 +3,7 @@
 ## Stack
 - **Framework:** Next.js (JavaScript, App Router, `src/` dir, `@/*` import alias), full-stack via route handlers / server actions.
 - **Database:** MongoDB (remote-hosted) with Mongoose.
-- **Auth:** email/password only; users have a `role` (`admin`). No public admin sign-up.
+- **Auth:** email/password only; users have a `role` (`admin` | `reader`). Readers sign themselves up; the role is fixed server-side. No public admin sign-up.
 - **UI:** Tailwind CSS + shadcn/ui (Radix components copied into the repo, JS mode).
 - **Lint:** ESLint.
 
@@ -18,7 +18,7 @@
 Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 ## Data model (initial)
-- **User:** email (unique), passwordHash, role (`admin`)
+- **User:** name (optional; admins have none), email (unique), passwordHash, role (`admin` | `reader`)
 - **Author:** name, bio
 - **Genre:** name (unique)
 - **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear
@@ -30,6 +30,10 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 **Public**
 - `/` : landing / book list; optional `?q=` search (title or author name)
 - `/books/[id]` : book detail
+
+**Reader**
+- `/signup`, `/login` : reader account pages (signed-in readers are redirected to the dashboard)
+- `/dashboard` : reader dashboard (requires reader session)
 
 **Admin** (requires admin session)
 - `/admin/login`

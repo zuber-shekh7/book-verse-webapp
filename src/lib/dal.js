@@ -17,3 +17,19 @@ export async function getAdminEmail() {
   const user = await User.findById(userId).select("email").lean();
   return user?.email ?? "";
 }
+
+// Guard for reader-only pages. Admins are sent to the admin panel instead.
+export async function requireReader() {
+  const session = await readSession();
+  if (!session) redirect("/login");
+  if (session.role !== "reader") redirect("/admin/books");
+  return session;
+}
+
+export async function getCurrentUser() {
+  const { userId } = await requireReader();
+  await connectDB();
+  const user = await User.findById(userId).select("name email createdAt").lean();
+  if (!user) redirect("/login");
+  return { name: user.name || user.email, email: user.email, createdAt: user.createdAt.toISOString() };
+}

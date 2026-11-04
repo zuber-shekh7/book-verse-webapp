@@ -141,3 +141,8 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 ### Book list search (`/`)
 - GET form above the grid: search input + Search button (icon-only on mobile), full container width so its edges line up with the grid. An × inside the input clears the search (only shown when a term is active).
 - Search lives in the URL (`?q=`), so results are shareable. When searching, a muted "{n} books for “{q}”" line sits above the grid; no match shows "No books match your search." with a Clear link.
+
+### Auth pages and dashboard
+- `/signup` and `/login`: centered `max-w-sm` form under a Lora H1, with a muted cross-link below ("Already have an account? Log in").
+- Header: signed out shows ghost "Log in" and primary "Sign up"; readers see "Dashboard"; admins see "Admin". Labels collapse to icons below `sm`.
+- `/dashboard`: Lora "Welcome, {name}" with an outline Log out button on the right, then an account card (name, email, member since).

@@ -23,7 +23,7 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
 - Genre/author filters on the book list (`searchBooks` already accepts `genre`/`author`)
 - Ratings and written reviews (+ moderation)
 - Reading lists / shelves (want to read, reading, read)
-- Reader accounts
+- Reader accounts: sign-up, login and a basic dashboard are done; profile editing, password reset and email verification are not
 
 ## Out of scope for now
 - File uploads (cover image is a URL)
