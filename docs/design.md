@@ -105,7 +105,7 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 - Multi-selects (authors, genres) as checkbox lists or badge pickers; at least one author required.
 
 ### Login (`/admin/login`)
-- Centered card (max 400px) on the page background, BookVerse wordmark in Lora above, email and password fields, one full-width primary button.
+- Same layout as `/login`: public site header, centered `max-w-sm` form under a Lora H1 ("Admin login"), email and password fields, one full-width primary button. It reuses `ReaderLoginForm`. No signup or forgot-password links (both are reader-only).
 
 ## 7. Navigation and layout
 - **Public header:** wordmark "BookVerse" (Lora, 600) left, theme toggle right. Sticky not required for MVP. Footer is a single muted line.

@@ -89,22 +89,3 @@ export function BookForm({ action, book, authors, genres }) {
     </FormShell>
   );
 }
-
-export function LoginForm({ action }) {
-  return (
-    <FormShell action={action} submitLabel="Log in">
-      <Field label="Email" name="email">
-        <Input id="email" name="email" type="email" autoComplete="email" required />
-      </Field>
-      <Field label="Password" name="password">
-        <Input
-          id="password"
-          name="password"
-          type="password"
-          autoComplete="current-password"
-          required
-        />
-      </Field>
-    </FormShell>
-  );
-}
