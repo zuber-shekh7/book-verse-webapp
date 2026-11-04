@@ -2,6 +2,7 @@ import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 import { deleteBook } from "@/actions/catalog";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { buttonVariants } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -24,6 +25,7 @@ export default async function BooksPage() {
             <TableHead>Title</TableHead>
             <TableHead>Authors</TableHead>
             <TableHead>Genres</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead className="w-0" />
           </TableRow>
         </TableHeader>
@@ -35,6 +37,7 @@ export default async function BooksPage() {
               </TableCell>
               <TableCell>{b.authors.map((a) => a.name).join(", ")}</TableCell>
               <TableCell>{b.genres.map((g) => g.name).join(", ")}</TableCell>
+              <TableCell><StatusBadge isActive={b.isActive} /></TableCell>
               <TableCell className="flex justify-end gap-2">
                 <Link href={`/admin/books/${b._id}`} className={buttonVariants({ variant: "secondary", size: "sm" })} aria-label="View" title="View">
                   <Eye />
@@ -50,7 +53,7 @@ export default async function BooksPage() {
           ))}
           {books.length === 0 && (
             <TableRow>
-              <TableCell colSpan={4} className="text-muted-foreground">
+              <TableCell colSpan={5} className="text-muted-foreground">
                 No books yet. Add an author first, then a book.
               </TableCell>
             </TableRow>

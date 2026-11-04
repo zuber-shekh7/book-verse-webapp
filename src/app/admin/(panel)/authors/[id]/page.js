@@ -3,6 +3,7 @@ import { Pencil } from "lucide-react";
 import { notFound } from "next/navigation";
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { BookTable } from "@/components/admin/book-table";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getAuthor, listBooksByAuthor } from "@/lib/catalog";
 import { requireAdmin } from "@/lib/dal";
@@ -16,7 +17,10 @@ export default async function AuthorPage({ params }) {
     <section>
       <AdminBreadcrumbs items={[{ label: "Authors", href: "/admin/authors" }, { label: author.name }]} />
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{author.name}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">{author.name}</h1>
+          <StatusBadge isActive={author.isActive} />
+        </div>
         <Link href={`/admin/authors/${id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })} aria-label="Edit" title="Edit">
           <Pencil />
           <span className="hidden sm:inline">Edit</span>

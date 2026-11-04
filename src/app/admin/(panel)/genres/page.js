@@ -2,6 +2,7 @@ import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 import { deleteGenre } from "@/actions/catalog";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { buttonVariants } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -22,6 +23,7 @@ export default async function GenresPage() {
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead className="w-0" />
           </TableRow>
         </TableHeader>
@@ -31,6 +33,7 @@ export default async function GenresPage() {
               <TableCell>
                 <Link href={`/admin/genres/${g._id}`} className="text-primary underline-offset-4 hover:underline">{g.name}</Link>
               </TableCell>
+              <TableCell><StatusBadge isActive={g.isActive} /></TableCell>
               <TableCell className="flex justify-end gap-2">
                 <Link href={`/admin/genres/${g._id}`} className={buttonVariants({ variant: "secondary", size: "sm" })} aria-label="View" title="View">
                   <Eye />
@@ -46,7 +49,7 @@ export default async function GenresPage() {
           ))}
           {genres.length === 0 && (
             <TableRow>
-              <TableCell colSpan={2} className="text-muted-foreground">
+              <TableCell colSpan={3} className="text-muted-foreground">
                 No genres yet.
               </TableCell>
             </TableRow>

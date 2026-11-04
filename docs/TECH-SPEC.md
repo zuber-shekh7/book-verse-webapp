@@ -20,14 +20,17 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 
 ## Data model (initial)
 - **User:** name (optional; admins have none), email (unique), passwordHash, role (`admin` | `reader`)
-- **Author:** name, bio
-- **Genre:** name (unique)
+- **Author:** name, bio, isActive
+- **Genre:** name (unique), isActive
 - **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
 - **ReadingEntry:** userId -> User, bookId -> Book, status (`wishlist` | `reading` | `on_hold` | `dropped` | `completed`); unique on (userId, bookId). Removed when its book is deleted.
-- **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear
+- **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear, isActive
+
+`isActive` (default `false`) is the draft/publish flag on Author, Genre and Book. Readers only see active content: inactive books are hidden (404 for non-admins; admins can preview), inactive authors/genres are left off a book's lists, and a book with no active author is hidden. Reading-list rows for hidden books are kept but not shown or counted. `publicBookFilter()` and `getBook(id, { publicOnly })` in `src/lib/catalog.js` implement this.
 
 ## Seeding
 - `npm run seed:admin` creates the first admin from `ADMIN_EMAIL` / `ADMIN_PASSWORD`. It must be idempotent.
+- `npm run backfill:active` marks catalog documents created before `isActive` existed as active (run once after deploying the flag; idempotent).
 
 ## Routes (planned)
 **Public**

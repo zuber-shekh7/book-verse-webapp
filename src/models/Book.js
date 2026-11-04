@@ -14,6 +14,7 @@ const BookSchema = new mongoose.Schema(
     coverUrl: { type: String, default: "", trim: true },
     isbn: { type: String, default: "", trim: true },
     publishedYear: { type: Number },
+    isActive: { type: Boolean, default: false, index: true },
   },
   { timestamps: true },
 );

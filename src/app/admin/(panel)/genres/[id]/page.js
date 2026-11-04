@@ -3,6 +3,7 @@ import { Pencil } from "lucide-react";
 import { notFound } from "next/navigation";
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { BookTable } from "@/components/admin/book-table";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getGenre, listBooksByGenre } from "@/lib/catalog";
 import { requireAdmin } from "@/lib/dal";
@@ -16,7 +17,10 @@ export default async function GenrePage({ params }) {
     <section>
       <AdminBreadcrumbs items={[{ label: "Genres", href: "/admin/genres" }, { label: genre.name }]} />
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{genre.name}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">{genre.name}</h1>
+          <StatusBadge isActive={genre.isActive} />
+        </div>
         <Link href={`/admin/genres/${id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })} aria-label="Edit" title="Edit">
           <Pencil />
           <span className="hidden sm:inline">Edit</span>

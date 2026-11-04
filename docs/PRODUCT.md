@@ -13,6 +13,7 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - CRUD for **books** (title, one or more authors, genres, description, cover image URL, ISBN, published year).
    - CRUD for **authors** (name, bio).
    - CRUD for **genres** (name).
+   - **Draft / publish:** books, authors and genres have an Active flag (new items start as Draft). Readers only see active content, so nothing goes public until the admin has verified it.
    - Read-only **users** list and detail pages (admins and readers, with role).
 2. **Minimal public catalog**
    - Book list page.

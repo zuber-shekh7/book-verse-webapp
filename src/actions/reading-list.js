@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { publicBookFilter } from "@/lib/catalog";
 import { requireReader } from "@/lib/dal";
 import { connectDB } from "@/lib/db";
 import { READING_STATUSES } from "@/lib/reading-status";
@@ -20,7 +21,7 @@ export async function setReadingStatus(bookId, status) {
   if (!parsed.success) return { error: parsed.error.issues[0].message };
 
   await connectDB();
-  if (!(await Book.exists({ _id: parsed.data.bookId }))) return { error: "Book not found" };
+  if (!(await Book.exists({ _id: parsed.data.bookId, ...(await publicBookFilter()) }))) return { error: "Book not found" };
 
   const filter = { userId, bookId: parsed.data.bookId };
   const update = { status: parsed.data.status };

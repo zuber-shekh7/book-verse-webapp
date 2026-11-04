@@ -4,6 +4,7 @@ import { Pencil } from "lucide-react";
 import { notFound } from "next/navigation";
 import { AdminBreadcrumbs } from "@/components/admin/breadcrumbs";
 import { Badge } from "@/components/ui/badge";
+import { StatusBadge } from "@/components/admin/status-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { getBook } from "@/lib/catalog";
 import { requireAdmin } from "@/lib/dal";
@@ -19,7 +20,10 @@ export default async function BookPage({ params }) {
     <section>
       <AdminBreadcrumbs items={[{ label: "Books", href: "/admin/books" }, { label: book.title }]} />
       <div className="mb-4 flex items-center justify-between gap-4">
-        <h1 className="text-2xl font-bold">{book.title}</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-2xl font-bold">{book.title}</h1>
+          <StatusBadge isActive={book.isActive} />
+        </div>
         <Link href={`/admin/books/${id}/edit`} className={buttonVariants({ variant: "outline", size: "sm" })} aria-label="Edit" title="Edit">
           <Pencil />
           <span className="hidden sm:inline">Edit</span>

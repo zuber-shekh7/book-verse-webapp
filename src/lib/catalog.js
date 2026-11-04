@@ -8,6 +8,15 @@ import Genre from "@/models/Genre";
 // Convert lean Mongo docs to plain, serializable objects.
 const plain = (doc) => JSON.parse(JSON.stringify(doc));
 
+// Readers only see active content. Inactive authors/genres are left off a book's lists.
+const ACTIVE = { match: { isActive: true } };
+
+// Filter for books readers may see: the book is active and has at least one active author.
+export async function publicBookFilter() {
+  await connectDB();
+  return { isActive: true, authors: { $in: await Author.find({ isActive: true }).distinct("_id") } };
+}
+
 export async function listBooks() {
   await connectDB();
   const books = await Book.find()
@@ -18,14 +27,16 @@ export async function listBooks() {
   return plain(books);
 }
 
-export async function getBook(id) {
+// publicOnly: reader view. Returns null for a draft book or one with no active author.
+export async function getBook(id, { publicOnly = false } = {}) {
   if (!isValidObjectId(id)) return null;
   await connectDB();
-  const book = await Book.findById(id)
-    .populate("authors", "name bio")
-    .populate("genres", "name")
+  const book = await Book.findOne({ _id: id, ...(publicOnly && { isActive: true }) })
+    .populate({ path: "authors", select: "name bio isActive", ...(publicOnly && ACTIVE) })
+    .populate({ path: "genres", select: "name isActive", ...(publicOnly && ACTIVE) })
     .lean();
-  return book ? plain(book) : null;
+  if (!book || (publicOnly && book.authors.length === 0)) return null;
+  return plain(book);
 }
 
 export async function listAuthors() {
@@ -71,19 +82,20 @@ const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // Public catalog search. q matches title or author name; genre/author are ObjectId strings.
 export async function searchBooks({ q = "", genre = "", author = "" } = {}) {
   await connectDB();
-  const filter = {};
+  const { isActive, authors: activeAuthors } = await publicBookFilter();
+  const filter = { isActive, $and: [{ authors: activeAuthors }] };
   const term = q.trim().slice(0, 100);
   if (term) {
     const rx = new RegExp(escapeRegex(term), "i");
-    const authorIds = await Author.find({ name: rx }).distinct("_id");
-    filter.$or = [{ title: rx }, { authors: { $in: authorIds } }];
+    const authorIds = await Author.find({ name: rx, isActive: true }).distinct("_id");
+    filter.$and.push({ $or: [{ title: rx }, { authors: { $in: authorIds } }] });
   }
-  if (isValidObjectId(genre)) filter.genres = genre;
-  if (isValidObjectId(author)) filter.authors = author;
+  if (isValidObjectId(genre)) filter.$and.push({ genres: genre });
+  if (isValidObjectId(author)) filter.$and.push({ authors: author });
   const books = await Book.find(filter)
     .sort({ createdAt: -1 })
-    .populate("authors", "name")
-    .populate("genres", "name")
+    .populate({ path: "authors", select: "name", ...ACTIVE })
+    .populate({ path: "genres", select: "name", ...ACTIVE })
     .lean();
   return plain(books);
 }

@@ -1,7 +1,9 @@
 import "server-only";
 import mongoose, { isValidObjectId } from "mongoose";
+import { publicBookFilter } from "./catalog";
 import { connectDB } from "./db";
 import { READING_STATUSES } from "./reading-status";
+import Book from "@/models/Book";
 import ReadingEntry from "@/models/ReadingEntry";
 
 const plain = (doc) => JSON.parse(JSON.stringify(doc));
@@ -13,12 +15,19 @@ export async function getEntryStatus(userId, bookId) {
   return entry?.status ?? null;
 }
 
+// Ids of books readers can currently see; entries for hidden books are kept but not shown or counted.
+const visibleBookIds = async () => Book.find(await publicBookFilter()).distinct("_id");
+
 // Entries newest-activity first, each with its book (title, cover, authors). status is optional.
 export async function listEntries(userId, status) {
   await connectDB();
-  const entries = await ReadingEntry.find({ userId, ...(status ? { status } : {}) })
+  const entries = await ReadingEntry.find({ userId, bookId: { $in: await visibleBookIds() }, ...(status ? { status } : {}) })
     .sort({ updatedAt: -1 })
-    .populate({ path: "bookId", select: "title coverUrl authors", populate: { path: "authors", select: "name" } })
+    .populate({
+      path: "bookId",
+      select: "title coverUrl authors",
+      populate: { path: "authors", select: "name", match: { isActive: true } },
+    })
     .lean();
   return plain(entries)
     .filter((e) => e.bookId) // book may have been deleted
@@ -29,7 +38,7 @@ export async function listEntries(userId, status) {
 export async function countByStatus(userId) {
   await connectDB();
   const rows = await ReadingEntry.aggregate([
-    { $match: { userId: new mongoose.Types.ObjectId(userId) } },
+    { $match: { userId: new mongoose.Types.ObjectId(userId), bookId: { $in: await visibleBookIds() } } },
     { $group: { _id: "$status", n: { $sum: 1 } } },
   ]);
   const counts = Object.fromEntries(READING_STATUSES.map((s) => [s.value, 0]));

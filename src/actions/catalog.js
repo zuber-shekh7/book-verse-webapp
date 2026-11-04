@@ -10,15 +10,20 @@ import Book from "@/models/Book";
 import Genre from "@/models/Genre";
 import ReadingEntry from "@/models/ReadingEntry";
 
+// Checkbox: absent from FormData when unchecked.
+const checkbox = z.preprocess((v) => v === "on", z.boolean());
+
 const objectId = z.string().regex(/^[a-f\d]{24}$/i, "Invalid id");
 
 const AuthorSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
   bio: z.string().trim().default(""),
+  isActive: checkbox,
 });
 
 const GenreSchema = z.object({
   name: z.string().trim().min(1, "Name is required"),
+  isActive: checkbox,
 });
 
 const BookSchema = z.object({
@@ -32,6 +37,7 @@ const BookSchema = z.object({
     (v) => (v === "" || v == null ? undefined : Number(v)),
     z.number().int().min(0).max(3000).optional(),
   ),
+  isActive: checkbox,
 });
 
 function fieldsOf(formData, multi = []) {

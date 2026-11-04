@@ -26,9 +26,10 @@ export default function BookPage({ params }) {
 
 async function BookDetail({ params }) {
   const { id } = await params;
-  const book = await getBook(id);
-  if (!book) notFound();
   const session = await readSession();
+  // Admins can preview drafts; everyone else only sees active books.
+  const book = await getBook(id, { publicOnly: session?.role !== "admin" });
+  if (!book) notFound();
   const viewer = session?.role === "reader" ? "reader" : session ? "admin" : "guest";
   const status = viewer === "reader" ? await getEntryStatus(session.userId, id) : null;
 

@@ -4,6 +4,15 @@ import { Input } from "@/components/ui/input";
 import { Field, FormShell } from "@/components/form-shell";
 import { Textarea } from "@/components/ui/textarea";
 
+function ActiveField({ isActive }) {
+  return (
+    <label className="flex items-center gap-2 text-sm">
+      <input type="checkbox" name="isActive" defaultChecked={isActive} className="size-4 accent-primary" />
+      Active (visible to readers)
+    </label>
+  );
+}
+
 export function AuthorForm({ action, author }) {
   return (
     <FormShell action={action} submitLabel="Save author">
@@ -13,6 +22,7 @@ export function AuthorForm({ action, author }) {
       <Field label="Bio" name="bio">
         <Textarea id="bio" name="bio" defaultValue={author?.bio} rows={4} />
       </Field>
+      <ActiveField isActive={author?.isActive} />
     </FormShell>
   );
 }
@@ -23,6 +33,7 @@ export function GenreForm({ action, genre }) {
       <Field label="Name" name="name">
         <Input id="name" name="name" defaultValue={genre?.name} required />
       </Field>
+      <ActiveField isActive={genre?.isActive} />
     </FormShell>
   );
 }
@@ -49,7 +60,7 @@ export function BookForm({ action, book, authors, genres }) {
         >
           {authors.map((a) => (
             <option key={a._id} value={a._id}>
-              {a.name}
+              {a.name}{a.isActive ? "" : " (inactive)"}
             </option>
           ))}
         </select>
@@ -64,7 +75,7 @@ export function BookForm({ action, book, authors, genres }) {
         >
           {genres.map((g) => (
             <option key={g._id} value={g._id}>
-              {g.name}
+              {g.name}{g.isActive ? "" : " (inactive)"}
             </option>
           ))}
         </select>
@@ -86,6 +97,7 @@ export function BookForm({ action, book, authors, genres }) {
           defaultValue={book?.publishedYear}
         />
       </Field>
+      <ActiveField isActive={book?.isActive} />
     </FormShell>
   );
 }
