@@ -146,3 +146,7 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 - `/signup` and `/login`: centered `max-w-sm` form under a Lora H1, with a muted cross-link below ("Already have an account? Log in").
 - Header: signed out shows ghost "Log in" and primary "Sign up"; readers see "Dashboard"; admins see "Admin". Labels collapse to icons below `sm`.
 - `/dashboard`: Lora "Welcome, {name}" with an outline Log out button on the right, then an account card (name, email, member since).
+
+### Admin users (`/admin/users`)
+- Read-only. List heading shows the total, `Users (n)`; columns Name, Email, Role, Joined and an icon+label View button (icon-only below `sm`). Detail page is a `dl` with name, email, role, joined and last updated. No Edit or Delete.
+- Role badge: `admin` uses the default (burgundy) badge, `reader` the secondary badge. The password hash is never selected.

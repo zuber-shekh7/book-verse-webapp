@@ -39,6 +39,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - `/admin/login`
 - `/admin/books`, `/admin/books/new`, `/admin/books/[id]` (read-only view), `/admin/books/[id]/edit`
 - `/admin/authors`, `/admin/authors/new`, `/admin/authors/[id]` (read-only view), `/admin/authors/[id]/edit`
+- `/admin/users`, `/admin/users/[id]` (read-only: list of all users and a detail page; no edit/delete)
 - `/admin/genres`, `/admin/genres/new`, `/admin/genres/[id]` (read-only view), `/admin/genres/[id]/edit`
 
 ## Open technical decisions

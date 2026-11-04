@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, LogOut, Tag, Users } from "lucide-react";
+import { BookOpen, LogOut, Tag, UserRound, Users } from "lucide-react";
 import { logout } from "@/actions/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -22,6 +22,7 @@ const items = [
   { href: "/admin/books", label: "Books", icon: BookOpen },
   { href: "/admin/authors", label: "Authors", icon: Users },
   { href: "/admin/genres", label: "Genres", icon: Tag },
+  { href: "/admin/users", label: "Users", icon: UserRound },
 ];
 
 export function AdminSidebar({ email }) {
