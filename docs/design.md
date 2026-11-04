@@ -27,6 +27,7 @@ Defined as oklch and assigned to the existing shadcn variables. Values are start
 | `--muted-foreground` | `oklch(0.50 0.02 50)` | `oklch(0.72 0.015 70)` | Secondary text (authors, years, captions) |
 | `--accent` | `oklch(0.93 0.03 45)` | `oklch(0.30 0.03 30)` | Terracotta tint: hover states, selected rows |
 | `--accent-foreground` | `oklch(0.30 0.08 25)` | `oklch(0.95 0.008 80)` | Text on accent |
+| `--success` | `oklch(0.45 0.13 150)` | `oklch(0.75 0.15 150)` | Success messages |
 | `--destructive` | `oklch(0.55 0.22 27)` | `oklch(0.70 0.19 22)` | Delete actions, errors |
 | `--border` / `--input` | `oklch(0.90 0.015 75)` | `oklch(1 0 0 / 10%)` / `oklch(1 0 0 / 15%)` | Dividers, field borders |
 | `--ring` | `oklch(0.55 0.10 20)` | `oklch(0.62 0.10 25)` | Focus ring |
@@ -150,3 +151,7 @@ Items 1-5 are done. Open: 6 (contrast check) and 7.
 ### Admin users (`/admin/users`)
 - Read-only. List heading shows the total, `Users (n)`; columns Name, Email, Role, Joined and an icon+label View button (icon-only below `sm`). Detail page is a `dl` with name, email, role, joined and last updated. No Edit or Delete.
 - Role badge: `admin` uses the default (burgundy) badge, `reader` the secondary badge. The password hash is never selected.
+
+### Account settings and recovery
+- `/dashboard/settings`: back link, Lora H1, then two stacked `max-w-md` cards (Profile with read-only email, Change password). Dashboard header has outline Settings and Log out buttons, icon-only below `sm`.
+- `/forgot-password` and `/reset-password/[token]` reuse the centered `max-w-sm` auth layout. Form feedback uses `FormMessage`: a bordered banner with an icon (check = success in the green `--success` token, alert = error in `--destructive`), `role="status"`/`"alert"`. Messages are dismissed when the page is hidden, since Cache Components keeps pages mounted. `/login?reset=1` shows "Password updated. Please log in."
