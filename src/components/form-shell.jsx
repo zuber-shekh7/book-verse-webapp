@@ -14,7 +14,7 @@ export function Field({ label, name, children }) {
   );
 }
 
-export function FormShell({ action, submitLabel, pendingLabel = "Saving...", children }) {
+export function FormShell({ action, submitLabel, pendingLabel = "Saving...", submitDisabled = false, children }) {
   const [result, formAction, pending] = useActionState(action, null);
 
   // Cache Components keeps hidden pages mounted, so a stale message would reappear when the
@@ -32,7 +32,7 @@ export function FormShell({ action, submitLabel, pendingLabel = "Saving...", chi
       {children}
       {state?.success && <FormMessage type="success">{state.success}</FormMessage>}
       {state?.error && <FormMessage type="error">{state.error}</FormMessage>}
-      <Button type="submit" disabled={pending} className="w-fit">
+      <Button type="submit" disabled={pending || submitDisabled} className="w-fit">
         {pending ? pendingLabel : submitLabel}
       </Button>
     </form>

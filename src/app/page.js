@@ -36,6 +36,13 @@ async function Catalog({ searchParams }) {
             <>
               No books match your search.{" "}
               <Link href="/" className="text-primary underline-offset-4 hover:underline">Clear search</Link>
+              {" · "}
+              <Link
+                href={`/request-book?title=${encodeURIComponent(q.trim().slice(0, 200))}`}
+                className="text-primary underline-offset-4 hover:underline"
+              >
+                Can&apos;t find it? Request this book
+              </Link>
             </>
           ) : (
             "No books yet."
@@ -57,6 +64,10 @@ async function Catalog({ searchParams }) {
           </ul>
         </>
       )}
+      <p className="mt-10 text-sm text-muted-foreground">
+        Missing a book?{" "}
+        <Link href="/request-book" className="text-primary underline-offset-4 hover:underline">Request it</Link>
+      </p>
     </>
   );
 }

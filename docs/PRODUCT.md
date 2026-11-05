@@ -24,6 +24,10 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - Signed-in readers add books to a personal list with one status each: Wishlist, Reading, On hold, Dropped, Completed.
    - Added from the book page; status can be changed or removed there or on the list page (`/dashboard/reading-list`, tabs per status); counts on the dashboard.
 
+4. **Book requests (readers)**
+   - When a search finds nothing, readers can request the book (title, author, genre), searching our catalog first and entering their own text only when it is not there.
+   - Admins review requests in a queue: add the book, mark it added, or decline it (repeat requests are marked Duplicate). Readers see the status under "My requests".
+
 ## Later (not in MVP)
 - Genre/author filters on the book list (`searchBooks` already accepts `genre`/`author`)
 - Ratings and written reviews (+ moderation)

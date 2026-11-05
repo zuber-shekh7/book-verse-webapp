@@ -24,9 +24,12 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - **Genre:** name (unique), isActive
 - **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
 - **ReadingEntry:** userId -> User, bookId -> Book, status (`wishlist` | `reading` | `on_hold` | `dropped` | `completed`); unique on (userId, bookId). Removed when its book is deleted.
+- **BookRequest:** userId -> User, title, author (text), genre (text), status (`pending` | `added` | `declined`), declineReason (`duplicate` | `other`, only when declined). One row per submission (no merging); author and genre are plain text, a snapshot of what the reader asked for.
 - **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear, isActive
 
 `isActive` (default `false`) is the draft/publish flag on Author, Genre and Book. Readers only see active content: inactive books are hidden (404 for non-admins; admins can preview), inactive authors/genres are left off a book's lists, and a book with no active author is hidden. Reading-list rows for hidden books are kept but not shown or counted. `publicBookFilter()` and `getBook(id, { publicOnly })` in `src/lib/catalog.js` implement this.
+
+Book requests: readers (never guests) submit from `/request-book` with search-first fields (suggestions from active titles, authors and genres, or "use my own text"). A reader may have at most 10 pending requests and cannot repeat their own pending title+author (case-insensitive). Admins triage in `/admin/requests`: Add book (pre-fills `/admin/books/new?title=&author=&genre=`), Mark added, Duplicate or Decline (both set status `declined`), Reopen, Delete. Code: `src/actions/book-requests.js`, `src/lib/book-requests.js`, `src/components/search-picker.jsx`.
 
 Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks the user is still active (cached per request) and returns `null` for deactivated or deleted users. Login, forgot-password and reset-password refuse deactivated accounts. Admins can deactivate/reactivate readers only (`setUserActive` in src/actions/users.js).
 
@@ -43,6 +46,8 @@ Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks
 - `/signup`, `/login` : reader account pages (signed-in readers are redirected to the dashboard)
 - `/dashboard` : reader dashboard (requires reader session)
 - `/dashboard/reading-list` : the reader's list with status tabs (`?status=`); status can be changed from here and from the book page (requires reader session)
+- `/request-book` : request a book we don't have (`?title=` pre-fills; requires reader session)
+- `/dashboard/requests` : the reader's requests and their status (requires reader session)
 - `/dashboard/settings` : edit name, change password (requires reader session)
 - `/forgot-password`, `/reset-password/[token]` : password recovery (readers only; the link is printed to the server console in development, no mail provider yet)
 
@@ -51,6 +56,7 @@ Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks
 - `/admin/books`, `/admin/books/new`, `/admin/books/[id]` (read-only view), `/admin/books/[id]/edit`
 - `/admin/authors`, `/admin/authors/new`, `/admin/authors/[id]` (read-only view), `/admin/authors/[id]/edit`
 - `/admin/users`, `/admin/users/[id]` (read-only: list of all users and a detail page; no edit/delete)
+- `/admin/requests` : book request queue with status tabs (`?status=`)
 - `/admin/genres`, `/admin/genres/new`, `/admin/genres/[id]` (read-only view), `/admin/genres/[id]/edit`
 
 ## Open technical decisions

@@ -74,6 +74,18 @@ async function Dashboard() {
           </Link>
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Book requests</CardTitle>
+        </CardHeader>
+        <CardContent className="grid gap-4">
+          <p className="text-sm text-muted-foreground">Can&apos;t find a book? Ask us to add it and track your requests.</p>
+          <div className="flex flex-wrap gap-2">
+            <Link href="/request-book" className={buttonVariants({ size: "sm" })}>Request a book</Link>
+            <Link href="/dashboard/requests" className={buttonVariants({ variant: "outline", size: "sm" })}>My requests</Link>
+          </div>
+        </CardContent>
+      </Card>
       </div>
     </>
   );

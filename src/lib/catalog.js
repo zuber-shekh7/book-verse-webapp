@@ -99,3 +99,19 @@ export async function searchBooks({ q = "", genre = "", author = "" } = {}) {
     .lean();
   return plain(books);
 }
+
+// Suggestions for the book request form: active records whose name matches, first few only.
+async function searchByName(Model, q, limit = 5) {
+  const term = q.trim().slice(0, 100);
+  if (!term) return [];
+  await connectDB();
+  const rows = await Model.find({ name: new RegExp(escapeRegex(term), "i"), isActive: true })
+    .sort({ name: 1 })
+    .limit(limit)
+    .select("name")
+    .lean();
+  return plain(rows);
+}
+
+export const searchAuthors = (q) => searchByName(Author, q);
+export const searchGenres = (q) => searchByName(Genre, q);
