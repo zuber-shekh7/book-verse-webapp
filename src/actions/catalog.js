@@ -26,19 +26,28 @@ const GenreSchema = z.object({
   isActive: checkbox,
 });
 
-const BookSchema = z.object({
-  title: z.string().trim().min(1, "Title is required"),
-  authors: z.array(objectId).min(1, "Select at least one author"),
-  genres: z.array(objectId).default([]),
-  description: z.string().trim().default(""),
-  coverUrl: z.union([z.literal(""), z.url("Cover must be a valid URL")]).default(""),
-  isbn: z.string().trim().default(""),
-  publishedYear: z.preprocess(
-    (v) => (v === "" || v == null ? undefined : Number(v)),
-    z.number().int().min(0).max(3000).optional(),
-  ),
-  isActive: checkbox,
-});
+// Blank -> null (not undefined) so clearing a number on edit really clears it.
+const optionalNumber = (schema) =>
+  z.preprocess((v) => (v === "" || v == null ? null : Number(v)), schema.nullable());
+
+const BookSchema = z
+  .object({
+    title: z.string().trim().min(1, "Title is required"),
+    subtitle: z.string().trim().max(200, "Subtitle is too long").default(""),
+    authors: z.array(objectId).min(1, "Select at least one author"),
+    genres: z.array(objectId).default([]),
+    description: z.string().trim().default(""),
+    coverUrl: z.union([z.literal(""), z.url("Cover must be a valid URL")]).default(""),
+    isbn: z.string().trim().default(""),
+    publishedYear: optionalNumber(z.number().int().min(0).max(3000)),
+    series: z.string().trim().max(120, "Series is too long").default(""),
+    seriesNumber: optionalNumber(z.number().min(0).max(1000)),
+    pageCount: optionalNumber(z.number().int().min(1).max(20000)),
+    language: z.string().trim().max(40, "Language is too long").default(""),
+    publisher: z.string().trim().max(120, "Publisher is too long").default(""),
+    isActive: checkbox,
+  })
+  .refine((v) => v.seriesNumber == null || v.series, { path: ["series"], message: "Enter the series name" });
 
 function fieldsOf(formData, multi = []) {
   const data = Object.fromEntries(formData);

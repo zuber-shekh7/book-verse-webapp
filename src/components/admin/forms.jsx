@@ -49,6 +49,9 @@ export function BookForm({ action, book, authors, genres }) {
       <Field label="Title" name="title">
         <Input id="title" name="title" defaultValue={book?.title} required />
       </Field>
+      <Field label="Subtitle" name="subtitle">
+        <Input id="subtitle" name="subtitle" defaultValue={book?.subtitle} />
+      </Field>
       <Field label="Authors (hold Cmd/Ctrl to select several)" name="authors">
         <select
           id="authors"
@@ -94,8 +97,23 @@ export function BookForm({ action, book, authors, genres }) {
           id="publishedYear"
           name="publishedYear"
           type="number"
-          defaultValue={book?.publishedYear}
+          defaultValue={book?.publishedYear ?? ""}
         />
+      </Field>
+      <Field label="Pages" name="pageCount">
+        <Input id="pageCount" name="pageCount" type="number" min="1" defaultValue={book?.pageCount ?? ""} />
+      </Field>
+      <Field label="Language" name="language">
+        <Input id="language" name="language" defaultValue={book?.language} placeholder="English" />
+      </Field>
+      <Field label="Publisher" name="publisher">
+        <Input id="publisher" name="publisher" defaultValue={book?.publisher} />
+      </Field>
+      <Field label="Series" name="series">
+        <Input id="series" name="series" defaultValue={book?.series} />
+      </Field>
+      <Field label="Number in series" name="seriesNumber">
+        <Input id="seriesNumber" name="seriesNumber" type="number" step="any" min="0" defaultValue={book?.seriesNumber ?? ""} />
       </Field>
       <ActiveField isActive={book?.isActive} />
     </FormShell>

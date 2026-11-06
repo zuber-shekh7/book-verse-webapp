@@ -31,7 +31,7 @@ export default async function BookPage({ params }) {
       </div>
       <div className="flex flex-col gap-6 md:flex-row">
         {book.coverUrl && (
-          <img src={book.coverUrl} alt={`Cover of ${book.title}`} className="aspect-[2/3] w-full max-w-[200px] rounded-md object-cover shadow-sm" />
+          <img src={book.coverUrl} alt={`Cover of ${book.title}`} className="aspect-[2/3] w-full max-w-[200px] shrink-0 self-start rounded-md object-cover shadow-sm" />
         )}
         <dl className="grid max-w-[65ch] content-start gap-3 text-sm">
           <div>
@@ -51,7 +51,15 @@ export default async function BookPage({ params }) {
               ))}
             </dd>
           </div>
+          <div><dt className="text-muted-foreground">Subtitle</dt><dd>{book.subtitle || "—"}</dd></div>
+          <div>
+            <dt className="text-muted-foreground">Series</dt>
+            <dd>{book.series ? (book.seriesNumber != null ? `${book.series} #${book.seriesNumber}` : book.series) : "—"}</dd>
+          </div>
           <div><dt className="text-muted-foreground">Published</dt><dd>{book.publishedYear || "—"}</dd></div>
+          <div><dt className="text-muted-foreground">Publisher</dt><dd>{book.publisher || "—"}</dd></div>
+          <div><dt className="text-muted-foreground">Pages</dt><dd>{book.pageCount || "—"}</dd></div>
+          <div><dt className="text-muted-foreground">Language</dt><dd>{book.language || "—"}</dd></div>
           <div><dt className="text-muted-foreground">ISBN</dt><dd className="font-mono">{book.isbn || "—"}</dd></div>
           <div>
             <dt className="text-muted-foreground">Description</dt>

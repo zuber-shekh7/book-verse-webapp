@@ -40,12 +40,20 @@ async function BookDetail({ params }) {
         <img
           src={book.coverUrl}
           alt={`Cover of ${book.title}`}
-          className="aspect-[2/3] w-full max-w-[280px] shrink-0 rounded-md object-cover shadow-sm"
+          className="aspect-[2/3] w-full max-w-[280px] shrink-0 self-start rounded-md object-cover shadow-sm"
         />
       )}
       <div className="grid max-w-[65ch] content-start gap-3">
-        <h1 className="font-heading text-3xl font-semibold">{book.title}</h1>
+        <div>
+          <h1 className="font-heading text-3xl font-semibold">{book.title}</h1>
+          {book.subtitle && <p className="mt-1 text-lg text-muted-foreground">{book.subtitle}</p>}
+        </div>
         <p className="text-muted-foreground">by {book.authors.map((a) => a.name).join(", ")}</p>
+        {book.series && (
+          <p className="text-sm text-muted-foreground">
+            {book.seriesNumber != null ? `Book ${book.seriesNumber} of ${book.series}` : book.series}
+          </p>
+        )}
         {book.genres.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {book.genres.map((g) => (
@@ -59,6 +67,9 @@ async function BookDetail({ params }) {
         {book.description && <p className="whitespace-pre-line">{book.description}</p>}
         <dl className="text-sm text-muted-foreground">
           {book.publishedYear && <div>Published: {book.publishedYear}</div>}
+          {book.publisher && <div>Publisher: {book.publisher}</div>}
+          {book.pageCount && <div>Pages: {book.pageCount}</div>}
+          {book.language && <div>Language: {book.language}</div>}
           {book.isbn && <div>ISBN: <span className="font-mono">{book.isbn}</span></div>}
         </dl>
       </div>

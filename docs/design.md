@@ -92,7 +92,7 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 
 ### Book detail (`/books/[id]`)
 - Two columns from `md`: cover (max 280px) left, details right. Stacked on mobile.
-- Details order: title (Lora H1), authors, genre badges, metadata line (year, ISBN in mono), description (65ch).
+- Details order: title (Lora H1) with muted subtitle, authors, series line ("Book 2 of X"), genre badges, metadata (year, publisher, pages, language, ISBN in mono; only the ones that are set), description (65ch).
 - Back link to the list above the title.
 
 ### Admin lists (`/admin/books`, `authors`, `genres`)

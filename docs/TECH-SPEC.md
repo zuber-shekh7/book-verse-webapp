@@ -25,7 +25,7 @@ Set in `.env.local` (git-ignored via `.env*`). See `.env.example`.
 - **PasswordReset:** userId -> User, tokenHash (SHA-256 of the emailed token, unique), expiresAt (TTL index, 30 min)
 - **ReadingEntry:** userId -> User, bookId -> Book, status (`wishlist` | `reading` | `on_hold` | `dropped` | `completed`); unique on (userId, bookId). Removed when its book is deleted.
 - **BookRequest:** userId -> User, title, author (text), genre (text), status (`pending` | `added` | `declined`), declineReason (`duplicate` | `other`, only when declined). One row per submission (no merging); author and genre are plain text, a snapshot of what the reader asked for.
-- **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear, isActive
+- **Book:** title, authors -> [Author] (at least one), genres -> [Genre], description, coverUrl, isbn, publishedYear, subtitle, series, seriesNumber, pageCount, language, publisher, isActive (the new detail fields are all optional; blank numbers are stored as `null`)
 
 `isActive` (default `false`) is the draft/publish flag on Author, Genre and Book. Readers only see active content: inactive books are hidden (404 for non-admins; admins can preview), inactive authors/genres are left off a book's lists, and a book with no active author is hidden. Reading-list rows for hidden books are kept but not shown or counted. `publicBookFilter()` and `getBook(id, { publicOnly })` in `src/lib/catalog.js` implement this.
 
