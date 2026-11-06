@@ -15,6 +15,11 @@ export async function connectDB() {
   }
   if (cached.conn) return cached.conn;
   cached.promise ??= mongoose.connect(uri, { bufferCommands: false });
-  cached.conn = await cached.promise;
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null; // don't keep a failed attempt (e.g. a DNS blip); the next request retries
+    throw e;
+  }
   return cached.conn;
 }
