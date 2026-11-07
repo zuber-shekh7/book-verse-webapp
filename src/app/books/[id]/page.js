@@ -48,7 +48,15 @@ async function BookDetail({ params }) {
           <h1 className="font-heading text-3xl font-semibold">{book.title}</h1>
           {book.subtitle && <p className="mt-1 text-lg text-muted-foreground">{book.subtitle}</p>}
         </div>
-        <p className="text-muted-foreground">by {book.authors.map((a) => a.name).join(", ")}</p>
+        <p className="text-muted-foreground">
+          by{" "}
+          {book.authors.map((a, i) => (
+            <span key={a._id}>
+              {i > 0 && ", "}
+              <Link href={`/authors/${a._id}`} className="hover:text-foreground hover:underline underline-offset-4">{a.name}</Link>
+            </span>
+          ))}
+        </p>
         {book.series && (
           <p className="text-sm text-muted-foreground">
             {book.seriesNumber != null ? `Book ${book.seriesNumber} of ${book.series}` : book.series}
@@ -57,7 +65,7 @@ async function BookDetail({ params }) {
         {book.genres.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {book.genres.map((g) => (
-              <Badge key={g._id} variant="secondary">
+              <Badge key={g._id} variant="secondary" render={<Link href={`/genres/${g._id}`} />}>
                 {g.name}
               </Badge>
             ))}

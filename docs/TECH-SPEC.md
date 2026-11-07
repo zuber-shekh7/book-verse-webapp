@@ -40,7 +40,9 @@ Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks
 ## Routes (planned)
 **Public**
 - `/` : landing / book list; optional `?q=` search (title or author name)
-- `/books/[id]` : book detail
+- `/books/[id]` : book detail (author names and genre badges link to the pages below)
+- `/authors`, `/genres` : alphabetical lists of active authors/genres that have at least one visible book, with counts
+- `/authors/[id]`, `/genres/[id]` : the author/genre and its visible books (404 for inactive or unknown ids)
 
 **Reader**
 - `/signup`, `/login` : reader account pages (signed-in readers are redirected to the dashboard)

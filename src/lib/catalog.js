@@ -44,10 +44,10 @@ export async function listAuthors() {
   return plain(await Author.find().sort({ name: 1 }).lean());
 }
 
-export async function getAuthor(id) {
+export async function getAuthor(id, { publicOnly = false } = {}) {
   if (!isValidObjectId(id)) return null;
   await connectDB();
-  const author = await Author.findById(id).lean();
+  const author = await Author.findOne({ _id: id, ...(publicOnly && { isActive: true }) }).lean();
   return author ? plain(author) : null;
 }
 
@@ -56,10 +56,10 @@ export async function listGenres() {
   return plain(await Genre.find().sort({ name: 1 }).lean());
 }
 
-export async function getGenre(id) {
+export async function getGenre(id, { publicOnly = false } = {}) {
   if (!isValidObjectId(id)) return null;
   await connectDB();
-  const genre = await Genre.findById(id).lean();
+  const genre = await Genre.findOne({ _id: id, ...(publicOnly && { isActive: true }) }).lean();
   return genre ? plain(genre) : null;
 }
 
@@ -126,3 +126,28 @@ export async function listDraftBooks(limit = 5) {
     .lean();
   return plain(books);
 }
+
+// How many visible books each author/genre id has (field: "authors" | "genres").
+async function countVisibleBooksBy(field) {
+  const rows = await Book.aggregate([
+    { $match: await publicBookFilter() },
+    { $unwind: `$${field}` },
+    { $group: { _id: `$${field}`, count: { $sum: 1 } } },
+  ]);
+  return new Map(rows.map((r) => [String(r._id), r.count]));
+}
+
+// Active records that have at least one visible book, A-Z (case-insensitive), with that count.
+async function listPublicByName(Model, field) {
+  await connectDB();
+  const counts = await countVisibleBooksBy(field);
+  const rows = await Model.find({ _id: { $in: [...counts.keys()] }, isActive: true })
+    .collation({ locale: "en", strength: 2 })
+    .sort({ name: 1 })
+    .select("name")
+    .lean();
+  return plain(rows).map((r) => ({ ...r, count: counts.get(r._id) }));
+}
+
+export const listPublicAuthors = () => listPublicByName(Author, "authors");
+export const listPublicGenres = () => listPublicByName(Genre, "genres");

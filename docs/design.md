@@ -90,6 +90,11 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 - Missing `coverUrl`: placeholder tile on `muted` with a lucide `BookOpen` icon and the title text.
 - Empty catalog: centered message "No books yet" with muted text.
 
+### Browse by author and genre (`/authors`, `/genres`, `/authors/[id]`, `/genres/[id]`)
+- Entry points: a muted "Browse by: Authors · Genres" line under the home page title, and links on the book page (author names, genre badges).
+- Index: Lora H1, three-column list of name links (primary color) with a muted book count at the right and a bottom border per row; back link "All books".
+- Detail: Lora H1 with the name, author bio (65ch) when set, a muted "N books" line, then the same book grid as the home page (`BookGrid`). Back link to the index.
+
 ### Book detail (`/books/[id]`)
 - Two columns from `md`: cover (max 280px) left, details right. Stacked on mobile.
 - Details order: title (Lora H1) with muted subtitle, authors, series line ("Book 2 of X"), genre badges, metadata (year, publisher, pages, language, ISBN in mono; only the ones that are set), description (65ch).

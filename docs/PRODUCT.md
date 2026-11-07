@@ -21,6 +21,7 @@ A book **discovery & reviews** platform (Goodreads-style). Curators maintain the
    - Book detail page.
    - Both visible without login.
    - Search by title/author on the book list (URL query param).
+   - Browse by author and genre: alphabetical index pages with book counts (`/authors`, `/genres`) and a detail page per author/genre listing their books. Only active content appears.
 3. **Reading list (readers)**
    - Signed-in readers add books to a personal list with one status each: Wishlist, Reading, On hold, Dropped, Completed.
    - Added from the book page; status can be changed or removed there or on the list page (`/dashboard/reading-list`, tabs per status); counts on the dashboard.
