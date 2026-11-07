@@ -100,6 +100,11 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 - Dense table; row actions Edit (ghost) and Delete (ghost, destructive text) at the right.
 - Empty state: one line plus the "New ..." button.
 
+### Admin dashboard (`/admin`)
+- Landing page and first sidebar item (exact-match highlight, since `/admin` is a prefix of every admin route).
+- Row of four stat cards (Books, Authors, Genres, Readers): big Lora number (active count, or reader total) with a muted note (drafts, or "new this week · deactivated"). Each card links to its list.
+- Below, three list cards (Pending requests, Draft books, Newest readers), 5 rows each, "View all" link top right, one-line empty states.
+
 ### Admin forms (`/new`, `/[id]/edit`)
 - Single-column form per section 5, inside a bordered card, page title above.
 - Multi-selects (authors, genres) as checkbox lists or badge pickers; at least one author required.

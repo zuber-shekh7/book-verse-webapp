@@ -19,3 +19,8 @@ export async function getUser(id) {
   const user = await User.findById(id).select(FIELDS).lean();
   return user ? plain(user) : null;
 }
+
+export async function listRecentReaders(limit = 5) {
+  await connectDB();
+  return plain(await User.find({ role: "reader" }).sort({ createdAt: -1 }).limit(limit).select(FIELDS).lean());
+}

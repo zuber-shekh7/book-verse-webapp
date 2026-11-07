@@ -22,7 +22,7 @@ export async function getAdminEmail() {
 export async function requireReader() {
   const session = await readSession();
   if (!session) redirect("/login");
-  if (session.role !== "reader") redirect("/admin/books");
+  if (session.role !== "reader") redirect("/admin");
   return session;
 }
 

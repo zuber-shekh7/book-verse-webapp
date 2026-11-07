@@ -115,3 +115,14 @@ async function searchByName(Model, q, limit = 5) {
 
 export const searchAuthors = (q) => searchByName(Author, q);
 export const searchGenres = (q) => searchByName(Genre, q);
+
+// Newest draft books for the admin dashboard.
+export async function listDraftBooks(limit = 5) {
+  await connectDB();
+  const books = await Book.find({ isActive: { $ne: true } })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate("authors", "name")
+    .lean();
+  return plain(books);
+}

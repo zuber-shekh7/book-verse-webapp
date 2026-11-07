@@ -36,7 +36,7 @@ function HeaderLink({ href, icon: Icon, label, variant = "ghost" }) {
 async function AuthLinks() {
   const session = await readSession();
   if (session?.role === "reader") return <HeaderLink href="/dashboard" icon={LayoutDashboard} label="Dashboard" />;
-  if (session?.role === "admin") return <HeaderLink href="/admin/books" icon={Shield} label="Admin" />;
+  if (session?.role === "admin") return <HeaderLink href="/admin" icon={Shield} label="Admin" />;
   return (
     <>
       <HeaderLink href="/login" icon={LogIn} label="Log in" />

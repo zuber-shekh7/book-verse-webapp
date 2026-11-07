@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Inbox, LogOut, Tag, UserRound, Users } from "lucide-react";
+import { BookOpen, Inbox, LayoutDashboard, LogOut, Tag, UserRound, Users } from "lucide-react";
 import { logout } from "@/actions/auth";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/sidebar";
 
 const items = [
+  { href: "/admin", label: "Dashboard", icon: LayoutDashboard },
   { href: "/admin/books", label: "Books", icon: BookOpen },
   { href: "/admin/authors", label: "Authors", icon: Users },
   { href: "/admin/genres", label: "Genres", icon: Tag },
@@ -32,7 +33,7 @@ export function AdminSidebar({ email }) {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Link
-          href="/admin/books"
+          href="/admin"
           className="px-2 py-1 font-heading text-lg font-semibold group-data-[collapsible=icon]:hidden"
         >
           BookVerse
@@ -45,7 +46,7 @@ export function AdminSidebar({ email }) {
               {items.map(({ href, label, icon: Icon }) => (
                 <SidebarMenuItem key={href}>
                   <SidebarMenuButton
-                    isActive={pathname.startsWith(href)}
+                    isActive={href === "/admin" ? pathname === "/admin" : pathname.startsWith(href)}
                     tooltip={label}
                     render={<Link href={href} />}
                   >

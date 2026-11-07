@@ -53,6 +53,7 @@ Sessions are stateless JWTs, so `readSession()` (src/lib/session.js) also checks
 
 **Admin** (requires admin session)
 - `/admin/login`
+- `/admin` : dashboard and admin landing page (totals and recent lists; queries in `src/lib/admin-stats.js` and the `listDraftBooks` / `listRecentPendingRequests` / `listRecentReaders` helpers)
 - `/admin/books`, `/admin/books/new`, `/admin/books/[id]` (read-only view), `/admin/books/[id]/edit`
 - `/admin/authors`, `/admin/authors/new`, `/admin/authors/[id]` (read-only view), `/admin/authors/[id]/edit`
 - `/admin/users`, `/admin/users/[id]` (read-only: list of all users and a detail page; no edit/delete)

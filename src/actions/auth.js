@@ -29,7 +29,7 @@ export async function login(_prev, formData) {
   if (user.isActive === false) return { error: "Your account has been deactivated." };
 
   await createSession({ userId: user.id, role: user.role });
-  redirect("/admin/books");
+  redirect("/admin");
 }
 
 export async function logout() {

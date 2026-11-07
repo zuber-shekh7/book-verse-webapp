@@ -5,6 +5,6 @@ import { readSession } from "@/lib/session";
 export async function AuthRedirect() {
   const session = await readSession();
   if (session?.role === "reader") redirect("/dashboard");
-  if (session?.role === "admin") redirect("/admin/books");
+  if (session?.role === "admin") redirect("/admin");
   return null;
 }

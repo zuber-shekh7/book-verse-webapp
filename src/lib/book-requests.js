@@ -22,3 +22,13 @@ export async function listRequestsForUser(userId) {
   await connectDB();
   return plain(await BookRequest.find({ userId }).sort({ createdAt: -1 }).lean());
 }
+
+export async function listRecentPendingRequests(limit = 5) {
+  await connectDB();
+  const rows = await BookRequest.find({ status: "pending" })
+    .sort({ createdAt: -1 })
+    .limit(limit)
+    .populate("userId", "name email")
+    .lean();
+  return plain(rows);
+}
