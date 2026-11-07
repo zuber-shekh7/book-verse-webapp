@@ -95,6 +95,12 @@ Icons: lucide, 16px in buttons, 20px elsewhere, stroke 1.75.
 - Index: Lora H1, three-column list of name links (primary color) with a muted book count at the right and a bottom border per row; back link "All books".
 - Detail: Lora H1 with the name, author bio (65ch) when set, a muted "N books" line, then the same book grid as the home page (`BookGrid`). Back link to the index.
 
+### 404 page (`src/app/not-found.js`)
+- One page for the whole app, including admin URLs (it renders for `notFound()` calls and unmatched URLs; no admin variant).
+- "Torn page": a slightly tilted paper card (`bg-card`) with a burgundy bookmark ribbon at the top right and a torn bottom edge (SVG strip; a `drop-shadow` follows the edge). Big Lora "404" in `--primary`, heading "This chapter is missing.", one muted line of copy.
+- Below the card: the home search form (`BookFilters`) and "Browse: Authors · Genres · Home" links. Public site header stays.
+- Entrance is a short fade/slide, wrapped in `motion-safe:`. All colors are theme tokens, so dark mode needs no extra rules.
+
 ### Book detail (`/books/[id]`)
 - Two columns from `md`: cover (max 280px) left, details right. Stacked on mobile.
 - Details order: title (Lora H1) with muted subtitle, authors, series line ("Book 2 of X"), genre badges, metadata (year, publisher, pages, language, ISBN in mono; only the ones that are set), description (65ch).
